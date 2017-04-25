@@ -18,6 +18,7 @@ PACKAGECONFIG[readline] = "--enable-client,--disable-client,readline,"
 PACKAGECONFIG[testing] = "--enable-testing,--disable-testing"
 PACKAGECONFIG[midi] = "--enable-midi,--disable-midi,alsa-lib"
 PACKAGECONFIG[systemd] = "--enable-systemd,--disable-systemd"
+PACKAGECONFIG[cups] = "--enable-cups,--disable-cups,,cups"
 
 SRC_URI = "\
     ${KERNELORG_MIRROR}/linux/bluetooth/bluez-${PV}.tar.xz \
@@ -37,7 +38,6 @@ inherit autotools pkgconfig systemd update-rc.d distro_features_check ptest
 EXTRA_OECONF = "\
   --enable-tools \
   --enable-deprecated \
-  --disable-cups \
   --enable-test \
   --enable-datafiles \
   --enable-library \
@@ -85,7 +85,11 @@ do_install_append() {
 
 PACKAGES =+ "${PN}-testtools ${PN}-obex ${PN}-noinst-tools"
 
-FILES_${PN} += "${libdir}/bluetooth/plugins/*.so ${systemd_unitdir}/ ${datadir}/dbus-1"
+FILES_${PN} += " \
+    ${libdir}/bluetooth/plugins/*.so \
+    ${systemd_unitdir}/ ${datadir}/dbus-1 \
+    ${libdir}/cups \
+"
 FILES_${PN}-dev += "\
   ${libdir}/bluetooth/plugins/*.la \
 "
