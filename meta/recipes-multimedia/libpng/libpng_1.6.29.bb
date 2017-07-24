@@ -13,6 +13,8 @@ SRC_URI = "https://sourceforge.net/projects/${BPN}/files/${BPN}${LIBV}/older-rel
 SRC_URI[md5sum] = "3245dbd76ea91e1437507357b858ec97"
 SRC_URI[sha256sum] = "4245b684e8fe829ebb76186327bb37ce5a639938b219882b53d64bd3cfc5f239"
 
+MIRRORS += "${SOURCEFORGE_MIRROR}/project/${BPN}/${BPN}${LIBV}/older-releases/${PV}"
+
 BINCONFIG = "${bindir}/libpng-config ${bindir}/libpng16-config"
 
 inherit autotools binconfig-disabled pkgconfig
