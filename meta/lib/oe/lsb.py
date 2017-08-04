@@ -109,6 +109,18 @@ def distro_identifier(adjust_hook=None):
 
     if adjust_hook:
         distro_id, release = adjust_hook(distro_id, release)
+
+    if (distro_id.lower() == 'linuxmint'):
+        if release in [ '17', '17.1', '17.2', '17.3' ]:
+            distro_id = 'Ubuntu'
+            release = '14.04'
+        if release in [ '18', '18.1', '18.2', '18.3' ]:
+            distro_id = 'Ubuntu'
+            release = '16.04'
+        if release in [ '19', '19.1', '19.2', '19.3' ]:
+            distro_id = 'Ubuntu'
+            release = '18.04'
+
     if not distro_id:
         return "unknown"
     # Filter out any non-alphanumerics and convert to lowercase
