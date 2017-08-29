@@ -442,6 +442,7 @@ python () {
         # Expand PV else it can trigger get_srcrev which can fail due to these variables being unset
         localdata.setVar('PV', d.getVar('PV', True))
         localdata.delVar('DATETIME')
+        localdata.delVar('DATE')
         localdata.delVar('TMPDIR')
 
         image_cmd = localdata.getVar("IMAGE_CMD", True)
@@ -505,7 +506,7 @@ python () {
         d.setVarFlag('do_image_%s' % t, 'postfuncs', 'create_symlinks')
         d.setVarFlag('do_image_%s' % t, 'subimages', ' '.join(subimages))
         d.appendVarFlag('do_image_%s' % t, 'vardeps', ' '.join(vardeps))
-        d.appendVarFlag('do_image_%s' % t, 'vardepsexclude', 'DATETIME')
+        d.appendVarFlag('do_image_%s' % t, 'vardepsexclude', 'DATETIME DATE')
 
         bb.debug(2, "Adding type %s before %s, after %s" % (t, 'do_image_complete', after))
         bb.build.addtask('do_image_%s' % t, 'do_image_complete', after, d)
