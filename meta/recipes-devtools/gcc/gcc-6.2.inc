@@ -80,9 +80,8 @@ SRC_URI = "\
            file://0047-libgcc_s-Use-alias-for-__cpu_indicator_init-instead-.patch \
            ${BACKPORTS} \
 "
-BACKPORTS = "\
-           file://ubsan-fix-check-empty-string.patch \
-"
+BACKPORTS = ""
+
 SRC_URI[md5sum] = "9768625159663b300ae4de2f4745fcc4"
 SRC_URI[sha256sum] = "9944589fc722d3e66308c0ce5257788ebd7872982a718aa2516123940671b7c5"
 
