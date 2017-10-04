@@ -158,9 +158,6 @@ EXTRA_OECONF = " --with-rootprefix=${rootprefix} \
 # per the systemd README, define VALGRIND=1 to run under valgrind
 CFLAGS .= "${@bb.utils.contains('PACKAGECONFIG', 'valgrind', ' -DVALGRIND=1', '', d)}"
 
-# disable problematic GCC 5.2 optimizations [YOCTO #8291]
-FULL_OPTIMIZATION_append_arm = " -fno-schedule-insns -fno-schedule-insns2"
-
 # Avoid login failure on qemumips64 when pam is enabled
 FULL_OPTIMIZATION_append_mips64 = " -fno-tree-switch-conversion -fno-tree-tail-merge"
 
