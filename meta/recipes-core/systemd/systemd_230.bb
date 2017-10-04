@@ -186,9 +186,6 @@ EXTRA_OECONF = " --with-rootprefix=${rootprefix} \
 # per the systemd README, define VALGRIND=1 to run under valgrind
 CFLAGS .= "${@bb.utils.contains('PACKAGECONFIG', 'valgrind', ' -DVALGRIND=1', '', d)}"
 
-# disable problematic GCC 5.2 optimizations [YOCTO #8291]
-FULL_OPTIMIZATION_append_arm = " -fno-schedule-insns -fno-schedule-insns2"
-
 do_configure_prepend() {
 	export NM="${HOST_PREFIX}gcc-nm"
 	export AR="${HOST_PREFIX}gcc-ar"
