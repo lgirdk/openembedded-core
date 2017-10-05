@@ -44,8 +44,10 @@ SRC_URI_append_libc-uclibc = "\
 "
 SRC_URI_append_qemuall = " file://0001-core-device.c-Change-the-default-device-timeout-to-2.patch"
 
+USE_LDCONFIG ?= "1"
+
 PACKAGECONFIG ??= "xz \
-                   ldconfig \
+                   ${@base_conditional('USE_LDCONFIG', '1', 'ldconfig', '', d)} \
                    ${@bb.utils.contains('DISTRO_FEATURES', 'pam', 'pam', '', d)} \
                    ${@bb.utils.contains('DISTRO_FEATURES', 'x11', 'xkbcommon', '', d)} \
                    ${@bb.utils.contains('DISTRO_FEATURES', 'selinux', 'selinux', '', d)} \
