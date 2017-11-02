@@ -14,7 +14,7 @@ RCONFLICTS_${PN} = "bluez4"
 
 PACKAGECONFIG ??= "obex-profiles \
     readline \
-    ${@bb.utils.filter('DISTRO_FEATURES', 'systemd', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'systemd', '', d)} \
     a2dp-profiles \
     avrcp-profiles \
     network-profiles \
