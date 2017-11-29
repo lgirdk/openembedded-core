@@ -7,7 +7,7 @@ LIC_FILES_CHKSUM = "file://LICENSES;md5=e9a558e243b36d3209f380deb394b213 \
 
 DEPENDS += "gperf-native"
 
-SRCREV ?= "ea23815a795f72035262953dad5beb03e09c17dd"
+SRCREV ?= "bea3f92405f705684275bffee954cafe84ffb09d"
 
 SRCBRANCH ?= "release/${PV}/master"
 
@@ -37,8 +37,6 @@ SRC_URI = "${GLIBC_GIT_URI};branch=${SRCBRANCH};name=glibc \
            file://0024-eglibc-Forward-port-cross-locale-generation-support.patch \
            file://0025-Define-DUMMY_LOCALE_T-if-not-defined.patch \
            file://0026-build_local_scope.patch \
-           file://0028-Bug-20116-Fix-use-after-free-in-pthread_create.patch \
-           file://CVE-2016-6323.patch \
            file://0001-Add-atomic_exchange_relaxed.patch \
            file://0002-Add-atomic-operations-required-by-the-new-condition-.patch \
            file://0003-Add-pretty-printers-for-the-NPTL-lock-types.patch \

@@ -37,28 +37,6 @@ Signed-off-by: Catalin Enache <catalin.enache@windriver.com>
  sysdeps/unix/sysv/linux/sparc/kernel-features.h |  1 -
  7 files changed, 14 insertions(+), 21 deletions(-)
 
-diff --git a/ChangeLog b/ChangeLog
-index c94db7b..44c518b 100644
---- a/ChangeLog
-+++ b/ChangeLog
-@@ -1,3 +1,17 @@
-+2017-04-04  Adhemerval Zanella  <adhemerval.zanella@linaro.org>
-+
-+	* nptl/pthreadP.h (USE_REQUEUE_PI): Remove ununsed macro.
-+	* sysdeps/unix/sysv/linux/arm/kernel-features.h
-+	(__ASSUME_REQUEUE_PI): Likewise.
-+	* sysdeps/unix/sysv/linux/kernel-features.h
-+	(__ASSUME_REQUEUE_PI): Likewise.
-+	* sysdeps/unix/sysv/linux/m68k/kernel-features.h
-+	(__ASSUME_REQUEUE_PI): Likewise.
-+	* sysdeps/unix/sysv/linux/mips/kernel-features.h
-+	(__ASSUME_REQUEUE_PI): Likewise.
-+	* sysdeps/unix/sysv/linux/sparc/kernel-features.h
-+	(__ASSUME_REQUEUE_PI): Likewise.
-+
- 2016-12-31  Torvald Riegel  <triegel@redhat.com>
- 
- 	[BZ #13165]
 diff --git a/nptl/pthreadP.h b/nptl/pthreadP.h
 index e9992bc..730c4ad 100644
 --- a/nptl/pthreadP.h
