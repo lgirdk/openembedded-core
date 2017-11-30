@@ -11,6 +11,9 @@ PV = "1.1.18+git${SRCPV}"
 
 SRC_URI = "git://git.musl-libc.org/musl \
            file://0001-Make-dynamic-linker-a-relative-symlink-to-libc.patch \
+           file://0001-arm-respect-both-__ARM_ARCH_6KZ__-and-__ARM_ARCH_6ZK.patch \
+           file://0002-arm-enable-a_ll-and-a_sc-helper-functions-when-build.patch \
+           file://0003-arm-provide-a_ctz_l-and-a_ctz_64-helper-functions.patch \
           "
 
 S = "${WORKDIR}/git"
