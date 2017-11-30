@@ -1,0 +1,30 @@
+From 432259db983c9a860ec79dd4958b183c0a193130 Mon Sep 17 00:00:00 2001
+From: Andre McCurdy <armccurdy@gmail.com>
+Date: Wed, 29 Nov 2017 16:49:51 -0800
+Subject: [PATCH 2/3] arm: enable a_ll and a_sc helper functions when building
+ for armv6t2
+
+armv6t2 compatible cores support "ldrex" and "strex" opcodes for both
+ARM and Thumb.
+
+Signed-off-by: Andre McCurdy <armccurdy@gmail.com>
+---
+ arch/arm/atomic_arch.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/atomic_arch.h b/arch/arm/atomic_arch.h
+index d1d09d8..6e2e3b4 100644
+--- a/arch/arm/atomic_arch.h
++++ b/arch/arm/atomic_arch.h
+@@ -8,7 +8,7 @@ extern uintptr_t __attribute__((__visibility__("hidden")))
+ 	__a_cas_ptr, __a_barrier_ptr;
+ 
+ #if ((__ARM_ARCH_6__ || __ARM_ARCH_6K__ || __ARM_ARCH_6KZ__ || __ARM_ARCH_6ZK__) && !__thumb__) \
+- || __ARM_ARCH_7A__ || __ARM_ARCH_7R__ ||  __ARM_ARCH >= 7
++ || __ARM_ARCH_6T2__ || __ARM_ARCH_7A__ || __ARM_ARCH_7R__ || __ARM_ARCH >= 7
+ 
+ #define a_ll a_ll
+ static inline int a_ll(volatile int *p)
+-- 
+1.9.1
+

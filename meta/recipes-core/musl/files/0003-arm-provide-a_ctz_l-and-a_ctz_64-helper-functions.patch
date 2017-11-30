@@ -1,0 +1,155 @@
+From 2016a8370c8732a7563fc2bf47f19ce44de17394 Mon Sep 17 00:00:00 2001
+From: Andre McCurdy <armccurdy@gmail.com>
+Date: Mon, 4 Dec 2017 17:06:16 -0800
+Subject: [PATCH 3/3] remove a_ctz_l from arch specific atomic_arch.h
+
+Arch specific atomic_arch.h should now define only a_ctz_32 and/or
+a_ctz_64, and a_ctz_l will be defined generically in terms of them.
+
+The generic code now provides more optimal generic ctz functions for
+targets which support a_clz_32 but not a_ctz_32 (e.g. ARMv5).
+
+Provide an ARM specific a_ctz_32 helper function for architecture
+versions for which it can be implemented efficiently via the "rbit"
+instruction (ie all Thumb-2 capable versions of ARM v6 and above).
+
+Signed-off-by: Andre McCurdy <armccurdy@gmail.com>
+---
+ arch/arm/atomic_arch.h  | 12 ++++++++++++
+ arch/i386/atomic_arch.h |  6 +++---
+ arch/x32/atomic_arch.h  |  4 ++--
+ src/internal/atomic.h   | 42 +++++++++++++++++++++++-------------------
+ 4 files changed, 40 insertions(+), 24 deletions(-)
+
+diff --git a/arch/arm/atomic_arch.h b/arch/arm/atomic_arch.h
+index 6e2e3b4..62458b4 100644
+--- a/arch/arm/atomic_arch.h
++++ b/arch/arm/atomic_arch.h
+@@ -91,4 +91,16 @@ static inline int a_clz_32(uint32_t x)
+ 	return x;
+ }
+ 
++#if __ARM_ARCH_6T2__ || __ARM_ARCH_7A__ || __ARM_ARCH_7R__ || __ARM_ARCH >= 7
++
++#define a_ctz_32 a_ctz_32
++static inline int a_ctz_32(uint32_t x)
++{
++	uint32_t xr;
++	__asm__ ("rbit %0, %1" : "=r"(xr) : "r"(x));
++	return a_clz_32(xr);
++}
++
++#endif
++
+ #endif
+diff --git a/arch/i386/atomic_arch.h b/arch/i386/atomic_arch.h
+index 7d2a48a..047fb68 100644
+--- a/arch/i386/atomic_arch.h
++++ b/arch/i386/atomic_arch.h
+@@ -92,10 +92,10 @@ static inline int a_ctz_64(uint64_t x)
+ 	return r;
+ }
+ 
+-#define a_ctz_l a_ctz_l
+-static inline int a_ctz_l(unsigned long x)
++#define a_ctz_32 a_ctz_32
++static inline int a_ctz_32(uint32_t x)
+ {
+-	long r;
++	int r;
+ 	__asm__( "bsf %1,%0" : "=r"(r) : "r"(x) );
+ 	return r;
+ }
+diff --git a/arch/x32/atomic_arch.h b/arch/x32/atomic_arch.h
+index a744c29..918c2d4 100644
+--- a/arch/x32/atomic_arch.h
++++ b/arch/x32/atomic_arch.h
+@@ -106,8 +106,8 @@ static inline int a_ctz_64(uint64_t x)
+ 	return x;
+ }
+ 
+-#define a_ctz_l a_ctz_l
+-static inline int a_ctz_l(unsigned long x)
++#define a_ctz_32 a_ctz_32
++static inline int a_ctz_32(uint32_t x)
+ {
+ 	__asm__( "bsf %1,%0" : "=r"(x) : "r"(x) );
+ 	return x;
+diff --git a/src/internal/atomic.h b/src/internal/atomic.h
+index ab473dd..f938879 100644
+--- a/src/internal/atomic.h
++++ b/src/internal/atomic.h
+@@ -251,6 +251,22 @@ static inline void a_crash()
+ }
+ #endif
+ 
++#ifndef a_ctz_32
++#define a_ctz_32 a_ctz_32
++static inline int a_ctz_32(uint32_t x)
++{
++#ifdef a_clz_32
++	return 31-a_clz_32(x&-x);
++#else
++	static const char debruijn32[32] = {
++		0, 1, 23, 2, 29, 24, 19, 3, 30, 27, 25, 11, 20, 8, 4, 13,
++		31, 22, 28, 18, 26, 10, 7, 12, 21, 17, 9, 6, 16, 5, 15, 14
++	};
++	return debruijn32[(x&-x)*0x076be629 >> 27];
++#endif
++}
++#endif
++
+ #ifndef a_ctz_64
+ #define a_ctz_64 a_ctz_64
+ static inline int a_ctz_64(uint64_t x)
+@@ -261,22 +277,23 @@ static inline int a_ctz_64(uint64_t x)
+ 		63, 52, 6, 26, 37, 40, 33, 47, 61, 45, 43, 21, 23, 58, 17, 10,
+ 		51, 25, 36, 32, 60, 20, 57, 16, 50, 31, 19, 15, 30, 14, 13, 12
+ 	};
+-	static const char debruijn32[32] = {
+-		0, 1, 23, 2, 29, 24, 19, 3, 30, 27, 25, 11, 20, 8, 4, 13,
+-		31, 22, 28, 18, 26, 10, 7, 12, 21, 17, 9, 6, 16, 5, 15, 14
+-	};
+ 	if (sizeof(long) < 8) {
+ 		uint32_t y = x;
+ 		if (!y) {
+ 			y = x>>32;
+-			return 32 + debruijn32[(y&-y)*0x076be629 >> 27];
++			return 32 + a_ctz_32(y);
+ 		}
+-		return debruijn32[(y&-y)*0x076be629 >> 27];
++		return a_ctz_32(y);
+ 	}
+ 	return debruijn64[(x&-x)*0x022fdd63cc95386dull >> 58];
+ }
+ #endif
+ 
++static inline int a_ctz_l(unsigned long x)
++{
++	return (sizeof(long) < 8) ? a_ctz_32(x) : a_ctz_64(x);
++}
++
+ #ifndef a_clz_64
+ #define a_clz_64 a_clz_64
+ static inline int a_clz_64(uint64_t x)
+@@ -298,17 +315,4 @@ static inline int a_clz_64(uint64_t x)
+ }
+ #endif
+ 
+-#ifndef a_ctz_l
+-#define a_ctz_l a_ctz_l
+-static inline int a_ctz_l(unsigned long x)
+-{
+-	static const char debruijn32[32] = {
+-		0, 1, 23, 2, 29, 24, 19, 3, 30, 27, 25, 11, 20, 8, 4, 13,
+-		31, 22, 28, 18, 26, 10, 7, 12, 21, 17, 9, 6, 16, 5, 15, 14
+-	};
+-	if (sizeof(long) == 8) return a_ctz_64(x);
+-	return debruijn32[(x&-x)*0x076be629 >> 27];
+-}
+-#endif
+-
+ #endif
+-- 
+1.9.1
+
