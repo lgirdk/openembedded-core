@@ -25,6 +25,11 @@ SRC_URI[sha256sum] = "51a00428c3ccb96db24089ed8394843c4f83cf8f42c6a4dfddb4b7c23f
 COMPATIBLE_HOST = "(x86_64.*|i.86.*|aarch64.*|arm.*)-linux"
 COMPATIBLE_HOST_armv4 = 'null'
 
+do_configure_linux-gnux32_prepend() {
+	cp ${STAGING_INCDIR}/gnu/stubs-x32.h ${STAGING_INCDIR}/gnu/stubs-64.h
+	cp ${STAGING_INCDIR}/bits/long-double-32.h ${STAGING_INCDIR}/bits/long-double-64.h
+}
+
 def gnu_efi_arch(d):
     import re
     tarch = d.getVar("TARGET_ARCH", True)
@@ -46,9 +51,22 @@ do_install() {
 
 FILES_${PN} += "${libdir}/*.lds"
 
+# 64-bit binaries are expected for EFI when targeting X32
+INSANE_SKIP_${PN}-dev_append_linux-gnux32 = " arch"
+INSANE_SKIP_${PN}-dev_append_linux-muslx32 = " arch"
+
 BBCLASSEXTEND = "native"
 
 # It doesn't support sse, its make.defaults sets:
 # CFLAGS += -mno-mmx -mno-sse
 # So also remove -mfpmath=sse from TUNE_CCARGS
 TUNE_CCARGS_remove = "-mfpmath=sse"
+
+python () {
+    ccargs = d.getVar('TUNE_CCARGS', True).split()
+    if '-mx32' in ccargs:
+        # use x86_64 EFI ABI
+        ccargs.remove('-mx32')
+        ccargs.append('-m64')
+        d.setVar('TUNE_CCARGS', ' '.join(ccargs))
+}
