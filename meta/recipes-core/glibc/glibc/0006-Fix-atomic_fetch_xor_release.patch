@@ -28,6 +28,20 @@ Signed-off-by: Catalin Enache <catalin.enache@windriver.com>
  include/atomic.h | 19 +++++++++++--------
  2 files changed, 17 insertions(+), 8 deletions(-)
 
+diff --git a/ChangeLog b/ChangeLog
+index 44c518b..893262d 100644
+--- a/ChangeLog
++++ b/ChangeLog
+@@ -1,3 +1,9 @@
++2016-10-26  Carlos O'Donell  <carlos@redhat.com>
++
++	* include/atomic.h
++	[USE_COMPILER_ATOMIC_BUILTINS && !atomic_fetch_xor_release]
++	(atomic_fetch_xor_release): Use	atomic_compare_exchange_weak_release.
++
+ 2017-04-04  Adhemerval Zanella  <adhemerval.zanella@linaro.org>
+ 
+ 	* nptl/pthreadP.h (USE_REQUEUE_PI): Remove ununsed macro.
 diff --git a/include/atomic.h b/include/atomic.h
 index 5a8e7e7..c8b4664 100644
 --- a/include/atomic.h
