@@ -27,6 +27,10 @@ do_install_append_class-nativesdk() {
 	create_wrapper ${D}/${bindir}/flex M4=${M4}
 }
 
+PACKAGES =+ "${PN}-libfl"
+
+FILES_${PN}-libfl = "${libdir}/libfl.so.* ${libdir}/libfl_pic.so.*"
+
 RDEPENDS_${PN} += "m4"
 DEPENDS_${PN}-ptest += "bison-native flex-native"
 
