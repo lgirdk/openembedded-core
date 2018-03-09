@@ -14,6 +14,7 @@ SRC_URI = "http://curl.haxx.se/download/curl-${PV}.tar.bz2 \
 #
 SRC_URI += " file://configure_ac.patch \
              file://CVE-2017-7407.patch \
+             file://CVE-2017-7468.patch \
              file://CVE-2017-1000100.patch \
              file://CVE-2017-1000101.patch \
              "
