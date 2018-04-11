@@ -24,12 +24,31 @@ def runstrip(arg):
     if elftype & 16:
         stripcmd.extend(["--strip-debug", "--remove-section=.comment",
             "--remove-section=.note", "--preserve-dates"])
+
+        # RDK specific extra stripping of kernel modules. Reduces image size,
+        # but may limit ability to debug. See discussion about running
+        # --strip-unneeded on kernel modules from the Buildroot mailing list:
+        # http://lists.busybox.net/pipermail/buildroot/2016-September/172506.html
+        stripcmd.append("--strip-unneeded")
+
+        # RDK specific extra stripping for MIPS. Probably not required if
+        # --strip-unneeded is used, but apparently some versions of binutils
+        # are buggy: https://sourceware.org/ml/binutils/2008-08/msg00013.html
+        stripcmd.append("--remove-section=.pdr")
+
     # .so and shared library
     elif ".so" in file and elftype & 8:
         stripcmd.extend(["--remove-section=.comment", "--remove-section=.note", "--strip-unneeded"])
+
+        # RDK specific extra stripping for MIPS. See comments above.
+        stripcmd.append("--remove-section=.pdr")
+
     # shared or executable:
     elif elftype & 8 or elftype & 4:
         stripcmd.extend(["--remove-section=.comment", "--remove-section=.note"])
+
+        # RDK specific extra stripping for MIPS. See comments above.
+        stripcmd.append("--remove-section=.pdr")
 
     stripcmd.append(file)
     bb.debug(1, "runstrip: %s" % stripcmd)
