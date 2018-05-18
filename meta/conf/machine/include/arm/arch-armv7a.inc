@@ -1,4 +1,5 @@
-DEFAULTTUNE ?= "armv7a"
+DEFAULTTUNE ?= "armv7at"
+ARM_INSTRUCTION_SET ?= "thumb"
 
 TUNEVALID[armv7a] = "Enable instructions for ARMv7-a"
 TUNECONFLICTS[armv7a] = "armv4 armv5 armv6 armv7"
