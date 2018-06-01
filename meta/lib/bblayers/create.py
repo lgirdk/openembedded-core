@@ -26,12 +26,14 @@ class CreatePlugin(LayerPlugin):
             sys.stderr.write("Specified layer directory exists\n")
             return 1
 
+        basename = os.path.basename(args.layerdir)
+
         # create dirs
         conf = os.path.join(layerdir, 'conf')
         bb.utils.mkdirhier(conf)
 
         # Create the README from templates/README
-        readme_template =  read_template('README') % (args.layerdir, args.layerdir, args.layerdir, args.layerdir, args.layerdir, args.layerdir)
+        readme_template =  read_template('README') % (basename, basename, basename, basename, basename, basename)
         readme = os.path.join(layerdir, 'README')
         with open(readme, 'w') as fd:
             fd.write(readme_template)
@@ -44,7 +46,7 @@ class CreatePlugin(LayerPlugin):
         shutil.copy(license_src, license_dst)
 
         # Create the layer.conf from templates/layer.conf
-        layerconf_template = read_template('layer.conf') % (args.layerdir, args.layerdir, args.layerdir, args.priority)
+        layerconf_template = read_template('layer.conf') % (basename, basename, basename, args.priority)
         layerconf = os.path.join(conf, 'layer.conf')
         with open(layerconf, 'w') as fd:
             fd.write(layerconf_template)
