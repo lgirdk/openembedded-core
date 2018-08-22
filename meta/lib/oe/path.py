@@ -71,7 +71,7 @@ def replace_absolute_symlinks(basedir, d):
                 continue
             walkdir = os.path.dirname(path.rpartition(basedir)[2])
             base = os.path.relpath(link, walkdir)
-            bb.debug(2, "Replacing absolute path %s with relative path %s" % (link, base))
+            bb.warn("Replacing absolute path %s with relative path %s" % (link, base))
             os.remove(path)
             os.symlink(base, path)
 
