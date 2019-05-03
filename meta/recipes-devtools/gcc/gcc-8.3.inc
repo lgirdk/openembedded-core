@@ -77,6 +77,7 @@ SRC_URI = "\
            file://CVE-2019-15847_p1.patch \
            file://CVE-2019-15847_p2.patch \
            file://CVE-2019-15847_p3.patch \
+           file://950-always-disable-ARM-munaligned-access-and-force-legac.patch \
 "
 SRC_URI[md5sum] = "65b210b4bfe7e060051f799e0f994896"
 SRC_URI[sha256sum] = "64baadfe6cc0f4947a84cb12d7f0dfaf45bb58b7e92461639596c21e02d97d2c"
