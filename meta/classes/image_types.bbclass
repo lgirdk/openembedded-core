@@ -60,6 +60,8 @@ IMAGE_CMD:jffs2 = "mkfs.jffs2 --root=${IMAGE_ROOTFS} --faketime --output=${IMGDE
 
 IMAGE_CMD:cramfs = "mkfs.cramfs ${IMAGE_ROOTFS} ${IMGDEPLOYDIR}/${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.cramfs ${EXTRA_IMAGECMD}"
 
+IMAGE_CMD:files = "find ${IMAGE_ROOTFS} ! -type d -printf '\t%s\t %P\n' | LC_ALL=C sort -k2 > ${IMGDEPLOYDIR}/${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.files"
+
 oe_mkext234fs () {
 	fstype=$1
 	extra_imagecmd=""
@@ -264,6 +266,7 @@ do_image_erofs_lz4hc[depends] += "erofs-utils-native:do_populate_sysroot"
 IMAGE_TYPES = " \
     jffs2 jffs2.sum \
     cramfs \
+    files \
     ext2 ext2.gz ext2.bz2 ext2.lzma \
     ext3 ext3.gz \
     ext4 ext4.gz \
