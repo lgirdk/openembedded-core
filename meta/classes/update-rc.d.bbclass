@@ -1,6 +1,13 @@
 UPDATERCPN ?= "${PN}"
 
-DEPENDS:append:class-target = "${@bb.utils.contains('DISTRO_FEATURES', 'sysvinit', ' update-rc.d initscripts', '', d)}"
+def get_target_depends(d):
+    if bb.utils.contains('DISTRO_FEATURES', 'sysvinit', True, False, d):
+        return 'update-rc.d initscripts'
+    if d.getVar('VIRTUAL-RUNTIME_init_manager') == 'busybox':
+        return 'update-rc.d'
+    return ''
+
+DEPENDS:append:class-target = " ${@get_target_depends(d)}"
 
 UPDATERCD = "update-rc.d"
 UPDATERCD:class-cross = ""
@@ -62,7 +69,12 @@ python __anonymous() {
     update_rc_after_parse(d)
 }
 
-PACKAGESPLITFUNCS:prepend = "${@bb.utils.contains('DISTRO_FEATURES', 'sysvinit', 'populate_packages_updatercd ', '', d)}"
+def get_packagesplit_funcs(d):
+    if bb.utils.contains('DISTRO_FEATURES', 'sysvinit', True, False, d) or d.getVar('VIRTUAL-RUNTIME_init_manager') == 'busybox':
+        return 'populate_packages_updatercd'
+    return ''
+
+PACKAGESPLITFUNCS:prepend = "${@get_packagesplit_funcs(d)} "
 PACKAGESPLITFUNCS:remove:class-nativesdk = "populate_packages_updatercd "
 
 populate_packages_updatercd[vardeps] += "updatercd_prerm updatercd_postrm updatercd_postinst"
