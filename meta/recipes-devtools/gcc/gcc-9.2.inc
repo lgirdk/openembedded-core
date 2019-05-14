@@ -26,6 +26,9 @@ LIC_FILES_CHKSUM = "\
 BASEURI ?= "${GNU_MIRROR}/gcc/gcc-${PV}/gcc-${PV}.tar.xz"
 #RELEASE ?= "5a5ca2d"
 #BASEURI ?= "https://repo.or.cz/official-gcc.git/snapshot/${RELEASE}.tar.gz;downloadfilename=gcc-${RELEASE}.tar.gz"
+
+PUMA_ARM_TOOLCHAIN ?= "0"
+
 SRC_URI = "\
            ${BASEURI} \
            file://0001-gcc-4.3.1-ARCH_FLAGS_FOR_TARGET.patch \
@@ -69,6 +72,7 @@ SRC_URI = "\
 	   file://CVE-2019-15847_2.patch \
 	   file://CVE-2019-15847_3.patch \
            file://re-PR-target-91102-aarch64-ICE-on-Linux-kernel-with-.patch \
+           ${@oe.utils.conditional('PUMA_ARM_TOOLCHAIN','1','file://950-always-disable-ARM-munaligned-access-and-force-legac.patch','',d)} \
 "
 S = "${TMPDIR}/work-shared/gcc-${PV}-${PR}/gcc-${PV}"
 SRC_URI[md5sum] = "3818ad8600447f05349098232c2ddc78"
