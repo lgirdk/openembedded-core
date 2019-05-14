@@ -28,6 +28,9 @@ CVE_CHECK_WHITELIST += "CVE-2019-15847"
 BASEURI ?= "${GNU_MIRROR}/gcc/gcc-${PV}/gcc-${PV}.tar.xz"
 #RELEASE ?= "5a5ca2d"
 #BASEURI ?= "https://repo.or.cz/official-gcc.git/snapshot/${RELEASE}.tar.gz;downloadfilename=gcc-${RELEASE}.tar.gz"
+
+PUMA_ARM_TOOLCHAIN ?= "0"
+
 SRC_URI = "\
            ${BASEURI} \
            file://0001-gcc-4.3.1-ARCH_FLAGS_FOR_TARGET.patch \
@@ -73,6 +76,7 @@ SRC_URI = "\
            file://0002-aarch64-Introduce-SLS-mitigation-for-RET-and-BR-inst.patch \
            file://0003-aarch64-Mitigate-SLS-for-BLR-instruction.patch \
            file://0001-Backport-fix-for-PR-tree-optimization-97236-fix-bad-.patch \
+           ${@oe.utils.conditional('PUMA_ARM_TOOLCHAIN','1','file://950-always-disable-ARM-munaligned-access-and-force-legac.patch','',d)} \
 "
 S = "${TMPDIR}/work-shared/gcc-${PV}-${PR}/gcc-${PV}"
 SRC_URI[sha256sum] = "71e197867611f6054aa1119b13a0c0abac12834765fe2d81f35ac57f84f742d1"
