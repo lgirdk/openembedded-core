@@ -1,6 +1,13 @@
 UPDATERCPN ?= "${PN}"
 
-DEPENDS_append_class-target = "${@bb.utils.contains('DISTRO_FEATURES', 'sysvinit', ' update-rc.d initscripts', '', d)}"
+def get_target_depends(d):
+    if bb.utils.contains('DISTRO_FEATURES', 'sysvinit', True, False, d):
+        return 'update-rc.d initscripts'
+    if d.getVar('VIRTUAL-RUNTIME_init_manager') == 'busybox':
+        return 'update-rc.d'
+    return ''
+
+DEPENDS_append_class-target = " ${@get_target_depends(d)}"
 
 UPDATERCD = "update-rc.d"
 UPDATERCD_class-cross = ""
@@ -50,7 +57,6 @@ if ${@use_updatercd(d)} && type update-rc.d >/dev/null 2>/dev/null; then
 fi
 }
 
-
 def update_rc_after_parse(d):
     if d.getVar('INITSCRIPT_PACKAGES', False) == None:
         if d.getVar('INITSCRIPT_NAME', False) == None:
@@ -62,7 +68,12 @@ python __anonymous() {
     update_rc_after_parse(d)
 }
 
-PACKAGESPLITFUNCS_prepend = "${@bb.utils.contains('DISTRO_FEATURES', 'sysvinit', 'populate_packages_updatercd ', '', d)}"
+def get_packagesplit_funcs(d):
+    if bb.utils.contains('DISTRO_FEATURES', 'sysvinit', True, False, d) or d.getVar('VIRTUAL-RUNTIME_init_manager') == 'busybox':
+        return 'populate_packages_updatercd'
+    return ''
+
+PACKAGESPLITFUNCS_prepend = "${@get_packagesplit_funcs(d)} "
 PACKAGESPLITFUNCS_remove_class-nativesdk = "populate_packages_updatercd "
 
 populate_packages_updatercd[vardeps] += "updatercd_prerm updatercd_postrm updatercd_postinst"
