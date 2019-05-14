@@ -28,6 +28,9 @@ CVE_CHECK_WHITELIST += "CVE-2019-15847"
 BASEURI ?= "${GNU_MIRROR}/gcc/gcc-${PV}/gcc-${PV}.tar.xz"
 #RELEASE ?= "5a5ca2d"
 #BASEURI ?= "https://repo.or.cz/official-gcc.git/snapshot/${RELEASE}.tar.gz;downloadfilename=gcc-${RELEASE}.tar.gz"
+
+PUMA_ARM_TOOLCHAIN ?= "0"
+
 SRC_URI = "\
            ${BASEURI} \
            file://0001-gcc-4.3.1-ARCH_FLAGS_FOR_TARGET.patch \
@@ -71,6 +74,7 @@ SRC_URI = "\
            file://0039-process_alt_operands-Don-t-match-user-defined-regs-o.patch \
            file://0002-libstdc-Fix-inconsistent-noexcept-specific-for-valar.patch \
            file://CVE-2023-4039.patch \
+           ${@oe.utils.conditional('PUMA_ARM_TOOLCHAIN','1','file://950-always-disable-ARM-munaligned-access-and-force-legac.patch','',d)} \
 "
 S = "${TMPDIR}/work-shared/gcc-${PV}-${PR}/gcc-${PV}"
 SRC_URI[sha256sum] = "27769f64ef1d4cd5e2be8682c0c93f9887983e6cfd1a927ce5a0a2915a95cf8f"
