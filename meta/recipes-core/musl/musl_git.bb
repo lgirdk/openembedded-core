@@ -13,6 +13,7 @@ PV = "${BASEVER}+git${SRCPV}"
 # mirror is at git://github.com/kraj/musl.git
 
 SRC_URI = "git://git.musl-libc.org/musl \
+           file://execinfo.h \
            file://0001-Make-dynamic-linker-a-relative-symlink-to-libc.patch \
            file://0002-ldso-Use-syslibdir-and-libdir-as-default-pathes-to-l.patch \
           "
@@ -68,6 +69,8 @@ do_install() {
 	rm -f ${D}${bindir}/ldd ${D}${GLIBC_LDSO}
 	lnr ${D}${libdir}/libc.so ${D}${bindir}/ldd
 	lnr ${D}${libdir}/libc.so ${D}${GLIBC_LDSO}
+
+	install -m 644 ${WORKDIR}/execinfo.h ${D}${includedir}/
 }
 
 PACKAGES =+ "${PN}-glibc-compat"
