@@ -13,6 +13,7 @@ PV = "${BASEVER}+git${SRCPV}"
 # mirror is at git://github.com/kraj/musl.git
 
 SRC_URI = "git://git.musl-libc.org/musl;branch=master \
+           file://execinfo.h \
            file://0001-Make-dynamic-linker-a-relative-symlink-to-libc.patch \
            file://0002-ldso-Use-syslibdir-and-libdir-as-default-pathes-to-l.patch \
            file://CVE-2025-26519-1.patch \
@@ -69,6 +70,8 @@ do_install() {
         echo "${libdir}" >> ${D}${sysconfdir}/ld-musl-${MUSL_LDSO_ARCH}.path
 	rm -f ${D}${bindir}/ldd ${D}${GLIBC_LDSO}
 	ln -rs ${D}${libdir}/libc.so ${D}${bindir}/ldd
+
+	install -m 644 ${WORKDIR}/execinfo.h ${D}${includedir}/
 }
 
 FILES:${PN} += "${nonarch_base_libdir}/ld-musl-${MUSL_LDSO_ARCH}.so.1 ${sysconfdir}/ld-musl-${MUSL_LDSO_ARCH}.path"
