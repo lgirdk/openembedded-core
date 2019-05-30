@@ -1,4 +1,4 @@
-#warning usage of non-standard #include <sys/cdefs.h> is deprecated
+//#warning usage of non-standard #include <sys/cdefs.h> is deprecated
 
 #undef __P
 #undef __PMT
