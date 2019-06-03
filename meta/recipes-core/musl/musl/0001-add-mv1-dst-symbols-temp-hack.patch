@@ -1,0 +1,62 @@
+From bf108400b8c835477078e43f552b733fc31a7755 Mon Sep 17 00:00:00 2001
+From: Andre McCurdy <armccurdy@gmail.com>
+Date: Mon, 3 Jun 2019 20:16:40 +0000
+Subject: [PATCH] add mv1 dst symbols - temp hack
+
+Signed-off-by: Andre McCurdy <armccurdy@gmail.com>
+---
+ dynamic.list    | 5 +++++
+ include/time.h  | 4 ++++
+ src/time/__tz.c | 5 +++++
+ 3 files changed, 14 insertions(+)
+
+diff --git a/dynamic.list b/dynamic.list
+index ee0d363..b80a85c 100644
+--- a/dynamic.list
++++ b/dynamic.list
+@@ -22,6 +22,11 @@ __timezone;
+ __daylight;
+ __tzname;
+ 
++dstOffset;
++dstDay;
++dstWeek;
++dstMonth;
++
+ signgam;
+ __signgam;
+ 
+diff --git a/include/time.h b/include/time.h
+index 672b3fc..847b2f2 100644
+--- a/include/time.h
++++ b/include/time.h
+@@ -115,6 +115,10 @@ extern char *tzname[2];
+ 
+ #endif
+ 
++extern long int dstOffset[2];
++extern short int dstDay[2];
++extern short int dstWeek[2];
++extern short int dstMonth[2];
+ 
+ #if defined(_XOPEN_SOURCE) || defined(_BSD_SOURCE) || defined(_GNU_SOURCE)
+ char *strptime (const char *__restrict, const char *__restrict, struct tm *__restrict);
+diff --git a/src/time/__tz.c b/src/time/__tz.c
+index 185642e..324dab9 100644
+--- a/src/time/__tz.c
++++ b/src/time/__tz.c
+@@ -7,6 +7,11 @@
+ #include "libc.h"
+ #include "lock.h"
+ 
++long int dstOffset[2];
++short int dstDay[2];
++short int dstWeek[2];
++short int dstMonth[2];
++
+ long  __timezone = 0;
+ int   __daylight = 0;
+ char *__tzname[2] = { 0, 0 };
+-- 
+1.9.1
+
