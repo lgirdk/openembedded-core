@@ -67,6 +67,7 @@ do_install() {
 	install -d ${D}${bindir}
 	rm -f ${D}${bindir}/ldd
 	lnr ${D}${libdir}/libc.so ${D}${bindir}/ldd
+	rm -f ${D}${GLIBC_LDSO}
 	lnr ${D}${libdir}/libc.so ${D}${GLIBC_LDSO}
 	for l in crypt dl m pthread resolv rt util xnet
 	do
