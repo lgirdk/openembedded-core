@@ -41,7 +41,11 @@ EXTRA_OECONF = " \
     --disable-static-shell \
 "
 
-CFLAGS_append = " -fPIC"
+# Forcing libsqlite3.a to be PIC is a workaround for pseudo (which builds a
+# shared library but links statically with sqlite...). Since we don't ever need
+# pseudo on the target limit the workaround to native and nativesdk builds.
+CFLAGS_append_class-native = " -fPIC"
+CFLAGS_append_class-nativesdk = " -fPIC"
 
 # pread() is in POSIX.1-2001 so any reasonable system must surely support it
 CFLAGS_append = " -DUSE_PREAD"
