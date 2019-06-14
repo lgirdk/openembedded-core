@@ -22,7 +22,7 @@ CVE_PRODUCT = "sqlite"
 inherit autotools pkgconfig siteinfo
 
 # enable those which are enabled by default in configure
-PACKAGECONFIG ?= "fts4 fts5 json1 rtree dyn_ext"
+PACKAGECONFIG ?= ""
 PACKAGECONFIG_class-native ?= "fts4 fts5 json1 rtree dyn_ext"
 
 PACKAGECONFIG[editline] = "--enable-editline,--disable-editline,libedit"
@@ -48,7 +48,8 @@ EXTRA_OECONF = " \
 CFLAGS_append = " -DUSE_PREAD"
 
 # Provide column meta-data API
-CFLAGS_append = " -DSQLITE_ENABLE_COLUMN_METADATA"
+CFLAGS_append_class-native = " -DSQLITE_ENABLE_COLUMN_METADATA"
+CFLAGS_append_class-nativesdk = " -DSQLITE_ENABLE_COLUMN_METADATA"
 
 # Unless SQLITE_BYTEORDER is predefined, the code falls back to build time
 # huristics, which are not always correct
