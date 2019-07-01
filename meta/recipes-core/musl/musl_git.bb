@@ -19,6 +19,8 @@ SRC_URI = "git://git.musl-libc.org/musl \
            file://0001-unistd.h-Add-TEMP_FAILURE_RETRY.patch \
            file://0001-add-mv1-dst-symbols-temp-hack.patch \
            file://0001-drop-unused-extra-char-from-getnameinfo-local-buffer.patch \
+           file://0001-Add-Thumb2-support-to-ARM-assembler-memcpy.patch \
+           file://0001-Add-big-endian-support-to-ARM-assembler-memcpy.patch \
           "
 
 S = "${WORKDIR}/git"
