@@ -1,0 +1,41 @@
+From a3bb76328cff0c2c7d4a27bfcb9dd0665c14da21 Mon Sep 17 00:00:00 2001
+From: Andre McCurdy <armccurdy@gmail.com>
+Date: Wed, 3 Jul 2019 19:39:43 -0700
+Subject: [PATCH] avoid unnecessary "bx lr" in ARM assembler memcpy
+
+Signed-off-by: Andre McCurdy <armccurdy@gmail.com>
+---
+ src/string/arm/memcpy.S | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/src/string/arm/memcpy.S b/src/string/arm/memcpy.S
+index 766a88a..73687fc 100644
+--- a/src/string/arm/memcpy.S
++++ b/src/string/arm/memcpy.S
+@@ -189,8 +189,12 @@ less_than_32_left:
+ 
+ 	/* we're done! restore everything and return */
+ 1:      ldmfd   sp!, {r5-r11}
++#if defined(__ARM_ARCH_4T__)
+ 	ldmfd   sp!, {r0, r4, lr}
+ 	bx      lr
++#else
++	ldmfd   sp!, {r0, r4, pc}
++#endif
+ 
+ 	/********************************************************************/
+ 
+@@ -474,6 +478,10 @@ copy_last_3_and_return:
+ 
+ 	/* we're done! restore sp and spilled registers and return */
+ 	add     sp,  sp, #28
++#if defined(__ARM_ARCH_4T__)
+ 	ldmfd   sp!, {r0, r4, lr}
+ 	bx      lr
++#else
++	ldmfd   sp!, {r0, r4, pc}
++#endif
+ 
+-- 
+1.9.1
+
