@@ -13,6 +13,8 @@ def sqlite_download_version(d):
 
 SQLITE_PV = "${@sqlite_download_version(d)}"
 
+SRC_URI_append_class-target = " file://0001-add-speedtest1.c.patch"
+
 S = "${WORKDIR}/sqlite-autoconf-${SQLITE_PV}"
 
 UPSTREAM_CHECK_URI = "http://www.sqlite.org/"
@@ -56,9 +58,10 @@ CFLAGS_append_class-nativesdk = " -DSQLITE_ENABLE_COLUMN_METADATA"
 # huristics, which are not always correct
 CFLAGS_append = " ${@oe.utils.conditional('SITEINFO_ENDIANNESS', 'le', '-DSQLITE_BYTEORDER=1234', '-DSQLITE_BYTEORDER=4321', d)}"
 
-PACKAGES = "lib${BPN} lib${BPN}-dev lib${BPN}-doc ${PN}-dbg lib${BPN}-staticdev ${PN}"
+PACKAGES = "lib${BPN} lib${BPN}-dev lib${BPN}-doc ${PN}-dbg lib${BPN}-staticdev ${PN}-speedtest ${PN}"
 
 FILES_${PN} = "${bindir}/*"
+FILES_${PN}-speedtest = "${bindir}/speedtest1*"
 FILES_lib${BPN} = "${libdir}/*.so.*"
 FILES_lib${BPN}-dev = "${libdir}/*.la ${libdir}/*.so \
                        ${libdir}/pkgconfig ${includedir}"
