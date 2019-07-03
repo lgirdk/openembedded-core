@@ -12,6 +12,8 @@ def sqlite_download_version(d):
 
 SQLITE_PV = "${@sqlite_download_version(d)}"
 
+SRC_URI_append_class-target = " file://0001-add-speedtest1.c.patch"
+
 S = "${WORKDIR}/sqlite-autoconf-${SQLITE_PV}"
 
 UPSTREAM_CHECK_URI = "http://www.sqlite.org/"
