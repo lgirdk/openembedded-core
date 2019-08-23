@@ -67,8 +67,13 @@ do_install() {
 	install -m 0644 ${WORKDIR}/dropbear.default ${D}${sysconfdir}/default/dropbear
 
 	install -m 0755 dropbearmulti ${D}${sbindir}/
-	ln -s ${sbindir}/dropbearmulti ${D}${bindir}/dbclient
 
+	for i in ${BINCOMMANDS}
+	do
+		# ssh and scp symlinks are created by update-alternatives
+		if [ $i = ssh ] || [ $i = scp ]; then continue; fi
+		ln -s ${sbindir}/dropbearmulti ${D}${bindir}/$i
+	done
 	for i in ${SBINCOMMANDS}
 	do
 		ln -s ./dropbearmulti ${D}${sbindir}/$i
@@ -98,7 +103,7 @@ do_install() {
 inherit update-alternatives
 
 ALTERNATIVE_PRIORITY = "20"
-ALTERNATIVE_${PN} = "scp ssh"
+ALTERNATIVE_${PN} = "${@bb.utils.filter('BINCOMMANDS', 'scp ssh', d)}"
 
 ALTERNATIVE_TARGET = "${sbindir}/dropbearmulti"
 
@@ -110,3 +115,5 @@ pkg_postrm_append_${PN} () {
         rm ${sysconfdir}/dropbear/dropbear_dss_host_key
   fi
 }
+
+FILES_${PN} += "${bindir}"
