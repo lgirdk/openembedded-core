@@ -21,6 +21,7 @@ SRC_URI = "git://git.musl-libc.org/musl \
            file://0001-Add-big-endian-support-to-ARM-assembler-memcpy.patch \
            file://0001-avoid-unnecessary-bx-lr-in-ARM-assembler-memcpy.patch \
            file://0001-add-ARM-assembler-memset.patch \
+           file://0001-arm-avoid-conditional-branch-to-PLT-in-sigsetjmp.s.patch \
           "
 
 S = "${WORKDIR}/git"
