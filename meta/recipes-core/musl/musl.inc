@@ -9,7 +9,7 @@ standards-conformance and safety."
 HOMEPAGE = "http://www.musl-libc.org/"
 LICENSE = "MIT"
 SECTION = "libs"
-LIC_FILES_CHKSUM = "file://COPYRIGHT;md5=d0fe2be17bc45ff4a42ade1c13ed6340"
+LIC_FILES_CHKSUM = "file://COPYRIGHT;md5=94af4cab13f3a2181c65dec08f75d614"
 
 INHIBIT_DEFAULT_DEPS = "1"
 
