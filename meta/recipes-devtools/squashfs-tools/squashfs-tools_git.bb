@@ -9,17 +9,14 @@ PV = "4.4"
 SRCREV = "52eb4c279cd283ed9802dd1ceb686560b22ffb67"
 SRC_URI = "git://github.com/plougher/squashfs-tools.git;protocol=https \
 "
-SRC_URI[lzma.md5sum] = "29d5ffd03a5a3e51aef6a74e9eafb759"
-SRC_URI[lzma.sha256sum] = "c935fd04dd8e0e8c688a3078f3675d699679a90be81c12686837e0880aa0fa1e"
 
 S = "${WORKDIR}/git/squashfs-tools"
 
 # needs FNM_EXTMATCH
 COMPATIBLE_HOST_libc-musl = 'null'
 
-EXTRA_OEMAKE = "${PACKAGECONFIG_CONFARGS}"
-
 PACKAGECONFIG ??= "gzip xz lzo lz4 lzma xattr reproducible"
+
 PACKAGECONFIG[gzip] = "GZIP_SUPPORT=1,GZIP_SUPPORT=0,zlib"
 PACKAGECONFIG[xz] = "XZ_SUPPORT=1,XZ_SUPPORT=0,xz"
 PACKAGECONFIG[lzo] = "LZO_SUPPORT=1,LZO_SUPPORT=0,lzo"
@@ -28,6 +25,8 @@ PACKAGECONFIG[lzma] = "LZMA_XZ_SUPPORT=1,LZMA_XZ_SUPPORT=0,xz"
 PACKAGECONFIG[xattr] = "XATTR_SUPPORT=1,XATTR_SUPPORT=0,attr"
 PACKAGECONFIG[zstd] = "ZSTD_SUPPORT=1,ZSTD_SUPPORT=0,zstd"
 PACKAGECONFIG[reproducible] = "REPRODUCIBLE_DEFAULT=1,REPRODUCIBLE_DEFAULT=0,"
+
+EXTRA_OEMAKE = "${PACKAGECONFIG_CONFARGS}"
 
 do_compile() {
 	oe_runmake mksquashfs unsquashfs
@@ -38,10 +37,6 @@ do_install () {
 	install -m 0755 mksquashfs ${D}${sbindir}/
 	install -m 0755 unsquashfs ${D}${sbindir}/
 }
-
-ARM_INSTRUCTION_SET_armv4 = "arm"
-ARM_INSTRUCTION_SET_armv5 = "arm"
-ARM_INSTRUCTION_SET_armv6 = "arm"
 
 BBCLASSEXTEND = "native nativesdk"
 
