@@ -535,7 +535,7 @@ def check_tar_version(sanity_data):
     if LooseVersion(version) < LooseVersion("1.24"):
         return "Your version of tar is older than 1.24 and has bugs which will break builds. Please install a newer version of tar (1.28+).\n"
     if LooseVersion(version) < LooseVersion("1.28"):
-        return "Your version of tar is older than 1.28 and does not have the support needed to enable reproducible builds. Please install a newer version of tar (you could use the projects buildtools-tarball from our last release).\n"
+        bb.warn("Your version of tar (%s) is older than 1.28 and does not have the support needed to enable reproducible builds" % version)
     return None
 
 # We use git parameters and functionality only found in 1.7.8 or later
