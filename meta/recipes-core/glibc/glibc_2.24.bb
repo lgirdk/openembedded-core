@@ -14,7 +14,15 @@ SRCBRANCH ?= "release/${PV}/master"
 GLIBC_GIT_URI ?= "git://sourceware.org/git/glibc.git"
 UPSTREAM_CHECK_GITTAGREGEX = "(?P<pver>\d+\.\d+(\.\d+)*)"
 
+USE_LDCONFIG ?= "1"
+
+LDCONFIGPATCH ?= ""
+LDCONFIGPATCH_class-target = "\
+           ${@base_conditional('USE_LDCONFIG', '1', '', 'file://disable-ld.so.cache-lookup.patch', d)} \
+"
+
 SRC_URI = "${GLIBC_GIT_URI};branch=${SRCBRANCH};name=glibc \
+           ${LDCONFIGPATCH} \
            file://0005-fsl-e500-e5500-e6500-603e-fsqrt-implementation.patch \
            file://0006-readlib-Add-OECORE_KNOWN_INTERPRETER_NAMES-to-known-.patch \
            file://0007-ppc-sqrt-Fix-undefined-reference-to-__sqrt_finite.patch \
