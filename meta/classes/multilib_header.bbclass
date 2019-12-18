@@ -29,7 +29,7 @@ oe_multilib_header() {
         esac
 	for each_header in "$@" ; do
 	   if [ ! -f "${D}/${includedir}/$each_header" ]; then
-	      bberror "oe_multilib_header: Unable to find header $each_header."
+	      bbwarn "oe_multilib_header: Unable to find header $each_header."
 	      continue
 	   fi
 	   stem=$(echo $each_header | sed 's#\.h$##')
