@@ -1,0 +1,32 @@
+From e5930375fb7c9aebee18cdbcac56e57d3cbf4ed9 Mon Sep 17 00:00:00 2001
+From: Andre McCurdy <armccurdy@gmail.com>
+Date: Wed, 5 Feb 2020 00:29:39 +0000
+Subject: [PATCH] don't create empty /usr/lib/tc
+
+If there's nothing to install in /usr/lib/tc then don't create the
+directory. Avoids issues with OE packaging QA checks.
+
+Upstream-Status: Inappropriate [OE Specific]
+
+Signed-off-by: Andre McCurdy <armccurdy@gmail.com>
+---
+ tc/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tc/Makefile b/tc/Makefile
+index a378c40..53ea972 100644
+--- a/tc/Makefile
++++ b/tc/Makefile
+@@ -143,8 +143,8 @@ libtc.a: $(TCLIB)
+ 	$(QUIET_AR)$(AR) rcs $@ $^
+ 
+ install: all
+-	mkdir -p $(MODDESTDIR)
+ 	install -m 0755 tc $(DESTDIR)$(SBINDIR)
++	[ -z "$(TCSO)" ] || mkdir -p $(MODDESTDIR)
+ 	for i in $(TCSO); \
+ 	do install -m 755 $$i $(MODDESTDIR); \
+ 	done
+-- 
+2.24.0
+
