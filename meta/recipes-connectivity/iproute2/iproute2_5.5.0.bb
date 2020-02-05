@@ -9,7 +9,7 @@ LICENSE = "GPLv2+"
 LIC_FILES_CHKSUM = "file://COPYING;md5=eb723b61539feef013de476e68b5c50a \
                     file://ip/ip.c;beginline=3;endline=8;md5=689d691d0410a4b64d3899f8d6e31817"
 
-DEPENDS = "flex-native bison-native iptables libcap"
+DEPENDS = "flex-native bison-native libcap"
 
 SRC_URI = "${KERNELORG_MIRROR}/linux/utils/net/${BPN}/${BP}.tar.xz \
            file://0001-libc-compat.h-add-musl-workaround.patch \
@@ -23,9 +23,10 @@ inherit update-alternatives bash-completion pkgconfig
 
 CLEANBROKEN = "1"
 
-PACKAGECONFIG ??= "tipc elf"
-PACKAGECONFIG[tipc] = ",,libmnl,"
+PACKAGECONFIG ??= "elf iptables tipc"
 PACKAGECONFIG[elf] = ",,elfutils,"
+PACKAGECONFIG[tipc] = ",,libmnl,"
+PACKAGECONFIG[iptables] = ",,iptables,"
 
 EXTRA_OEMAKE = " \
     CC='${CC}' \
