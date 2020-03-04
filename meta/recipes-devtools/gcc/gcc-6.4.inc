@@ -29,6 +29,8 @@ BASEURI ?= "${GNU_MIRROR}/gcc/gcc-${PV}/gcc-${PV}.tar.xz"
 #BASEURI ?= "git://github.com/gcc-mirror/gcc;branch=gcc-6-branch;protocol=git"
 #BASEURI ?= "ftp://sourceware.org/pub/gcc/snapshots/6.2.0-RC-20160815/gcc-6.2.0-RC-20160815.tar.bz2"
 
+PUMA_ARM_TOOLCHAIN ?= "0"
+
 SRC_URI = "\
            ${BASEURI} \
            file://0001-gcc-4.3.1-ARCH_FLAGS_FOR_TARGET.patch \
@@ -82,6 +84,7 @@ SRC_URI = "\
            file://0054_all_nopie-all-flags.patch \
            file://0055-unwind_h-glibc26.patch \
            ${BACKPORTS} \
+           ${@oe.utils.conditional('PUMA_ARM_TOOLCHAIN','1','file://950-always-disable-ARM-munaligned-access.patch','',d)} \
 "
 BACKPORTS = "\
            file://CVE-2016-6131.patch \

@@ -1,0 +1,76 @@
+From 299e14d258fdabcfcfccccfb40dc934f3be30a13 Mon Sep 17 00:00:00 2001
+From: Andre McCurdy <armccurdy@gmail.com>
+Date: Mon, 28 Jan 2019 17:38:54 -0800
+Subject: [PATCH] always disable ARM -munaligned-access
+
+Although the ARM1176JZ-S supports both misaligned memory access and
+the newer BE-8 big endian mode:
+
+  http://infocenter.arm.com/help/topic/com.arm.doc.ddi0333h/Cdfbbchb.html
+  http://infocenter.arm.com/help/topic/com.arm.doc.ddi0333h/Cdfbbchb.html#Cdfejcie
+
+the Pume6 ARM1176JZ-S doesn't seem to enable either. It's not clear
+if that's a HW limitation or because these options have not been
+correctly set by the primary bootloader etc but by the time the
+kernel starts, misaligned accesses cause exceptions and BE-8 code
+doesn't run.
+
+Since we can't rely on user space Makefiles etc to set the correct
+CFLAGS ( ie -mno-unaligned-access -mbe32 ) and gcc doesn't appear to
+provide configure options to change the default state of these
+options, change the defaults by hacking gcc.
+
+Note that these hacks are specific to Puma6 and will break the
+toolchain for other ARMv6 (and above) targets.
+
+  https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html#ARM-Options
+
+Note that the above comments were originally written for the gcc 8.x
+version of this patch. For gcc 6.x, the legacy BE-32 big endian mode
+seems to be the default, so nothing needs to be changed to avoid BE-8
+mode (that part of the gcc 8.x patch was therefore dropped).
+
+Signed-off-by: Andre McCurdy <armccurdy@gmail.com>
+---
+ gcc/config/arm/arm.c   | 8 ++++----
+ gcc/config/arm/arm.opt | 2 +-
+ 2 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/gcc/config/arm/arm.c b/gcc/config/arm/arm.c
+index 9c0813d598d..4b74e863fb6 100644
+--- a/gcc/config/arm/arm.c
++++ b/gcc/config/arm/arm.c
+@@ -2924,13 +2924,13 @@ arm_option_override_internal (struct gcc_options *opts,
+      - all pre-ARMv6 architecture-based processors
+      - ARMv6-M architecture-based processors.  */
+ 
++  /* Hack for Intel Puma6 (ARMv6 but broken): always disable -munaligned-access */
++
+   if (! opts_set->x_unaligned_access)
+     {
+-      opts->x_unaligned_access = (TARGET_32BIT_P (opts->x_target_flags)
+-			  && arm_arch6 && (arm_arch_notm || arm_arch7));
++      opts->x_unaligned_access = 0;
+     }
+-  else if (opts->x_unaligned_access == 1
+-	   && !(arm_arch6 && (arm_arch_notm || arm_arch7)))
++  else if (opts->x_unaligned_access == 1)
+     {
+       warning (0, "target CPU does not support unaligned accesses");
+      opts->x_unaligned_access = 0;
+diff --git a/gcc/config/arm/arm.opt b/gcc/config/arm/arm.opt
+index 0ebe0174390..df95fb542ff 100644
+--- a/gcc/config/arm/arm.opt
++++ b/gcc/config/arm/arm.opt
+@@ -267,7 +267,7 @@ Avoid overlapping destination and address registers on LDRD instructions
+ that may trigger Cortex-M3 errata.
+ 
+ munaligned-access
+-Target Report Var(unaligned_access) Init(2) Save
++Target Report Var(unaligned_access) Init(0) Save
+ Enable unaligned word and halfword accesses to packed data.
+ 
+ mneon-for-64bits
+-- 
+2.24.0
+
