@@ -1,0 +1,67 @@
+diff --git a/meta/recipes-support/libnl/libnl/musl-header-conflict.patch b/meta/recipes-support/libnl/libnl/musl-header-conflict.patch
+new file mode 100644
+index 0000000..5363685
+--- /dev/null
++++ b/meta/recipes-support/libnl/libnl/musl-header-conflict.patch
+@@ -0,0 +1,59 @@
++From fa1ecb21bd612c0f7c0bd380c15d058227451e4e Mon Sep 17 00:00:00 2001
++From: Zheng Ruoqin <zhengrq.fnst@cn.fujitsu.com>
++Date: Tue, 16 May 2017 02:30:21 +0900
++Subject: [PATCH] Fix musl compile error like:
++
++In file included from ../libnl-3.3.0/include/linux-private/linux/ipv6.h:5:0,
++                 from ../libnl-3.3.0/include/netlink-private/netlink.h:54,
++                 from ../libnl-3.3.0/lib/nl.c:28:
++../libnl-3.3.0/include/linux-private/linux/in6.h:32:8: error:
++redefinition of 'struct in6_addr'
++ struct in6_addr {
++        ^~~~~~~~
++
++Signed-off-by: Zheng Ruoqin <zhengrq.fnst@cn.fujitsu.com>
++---
++ include/linux-private/linux/if_bridge.h | 1 -
++ include/linux-private/linux/ipv6.h      | 1 -
++ include/netlink-private/netlink.h       | 1 -
++ 3 files changed, 3 deletions(-)
++
++diff --git a/include/linux-private/linux/if_bridge.h b/include/linux-private/linux/if_bridge.h
++index f24050b..8f7490c 100644
++--- a/include/linux-private/linux/if_bridge.h
+++++ b/include/linux-private/linux/if_bridge.h
++@@ -15,7 +15,6 @@
++
++ #include <linux/types.h>
++ #include <linux/if_ether.h>
++-#include <linux/in6.h>
++
++ #define SYSFS_BRIDGE_ATTR     "bridge"
++ #define SYSFS_BRIDGE_FDB      "brforward"
++diff --git a/include/linux-private/linux/ipv6.h b/include/linux-private/linux/ipv6.h
++index e05e684..f16349d 100644
++--- a/include/linux-private/linux/ipv6.h
+++++ b/include/linux-private/linux/ipv6.h
++@@ -2,7 +2,6 @@
++ #define _IPV6_H
++
++ #include <asm/byteorder.h>
++-#include <linux/in6.h>
++
++ /* The latest drafts declared increase in minimal mtu up to 1280. */
++
++diff --git a/include/netlink-private/netlink.h b/include/netlink-private/netlink.h
++index dd07c10..25ee07f 100644
++--- a/include/netlink-private/netlink.h
+++++ b/include/netlink-private/netlink.h
++@@ -30,7 +30,6 @@
++ #include <limits.h>
++ #include <search.h>
++
++-#include <arpa/inet.h>
++ #include <netdb.h>
++
++ #include <defs.h>
++--
++2.7.4
++
+
+
