@@ -19,6 +19,7 @@ EXTRA_OECONF_append = " --cache-file=${B}/config.cache"
 
 # Disable ifuncs for libatomic on arm conflicts -march/-mcpu
 EXTRA_OECONF_append_arm = " libat_cv_have_ifunc=no "
+EXTRA_OECONF_append_armeb = " libat_cv_have_ifunc=no "
 
 # Building with thumb enabled on armv6t fails
 ARM_INSTRUCTION_SET_armv6 = "arm"
