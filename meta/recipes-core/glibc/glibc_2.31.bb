@@ -16,18 +16,12 @@ NATIVESDKFIXES_class-nativesdk = "\
            file://0007-nativesdk-glibc-Make-relocatable-install-for-locales.patch \
 "
 
-LDCONFIGPATCH ?= ""
-LDCONFIGPATCH_class-target = "\
-           ${@bb.utils.contains('DISTRO_FEATURES', 'ldconfig', '', 'file://disable-ld.so.cache-lookup.patch', d)} \
-"
-
 SRC_URI =  "${GLIBC_GIT_URI};branch=${SRCBRANCH};name=glibc \
            file://etc/ld.so.conf \
            file://generate-supported.mk \
            file://makedbs.sh \
            \
            ${NATIVESDKFIXES} \
-           ${LDCONFIGPATCH} \
            file://0008-fsl-e500-e5500-e6500-603e-fsqrt-implementation.patch \
            file://0009-readlib-Add-OECORE_KNOWN_INTERPRETER_NAMES-to-known-.patch \
            file://0010-ppc-sqrt-Fix-undefined-reference-to-__sqrt_finite.patch \
