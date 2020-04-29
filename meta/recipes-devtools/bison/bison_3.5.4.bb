@@ -19,13 +19,13 @@ SRC_URI[sha256sum] = "4c17e99881978fa32c05933c5262457fa5b2b611668454f8dc2a695cd6
 # No point in hardcoding path to m4, just use PATH
 EXTRA_OECONF += "M4=m4"
 
-# Reset any loadavg set via environment, it breaks parallel build
-# | ../bison-3.5.2/lib/uniwidth/width.c:21:10: fatal error: uniwidth.h: No such file or directory
-# |  #include "uniwidth.h"
-# |           ^~~~~~~~~~~~
-EXTRA_OEMAKE_append = " -l"
-
 inherit autotools gettext texinfo
+
+# Build issues have been seen in cases where make can run a large number of
+# threads (e.g. with -l or -j greater than ~10 ?). Since bison doesn't take
+# long to compile, disabling PARALLEL_MAKE is a simple workaround until the
+# root cause of the problem is resolved.
+PARALLEL_MAKE = ""
 
 # The automatic m4 path detection gets confused, so force the right value
 acpaths = "-I ./m4"
