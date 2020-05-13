@@ -35,7 +35,7 @@ def volatile_systemd_services(d):
 
 SYSTEMD_SERVICE_${PN} = "${@volatile_systemd_services(d)}"
 
-FILES_${PN} += "${systemd_unitdir}/system/*.service ${servicedir}"
+FILES_${PN} += "${systemd_unitdir}/system ${servicedir}"
 
 do_compile () {
     while read spec mountpoint; do
