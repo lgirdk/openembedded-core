@@ -1,0 +1,86 @@
+From b7f39d779c6b942c127be20405b77527030444e7 Mon Sep 17 00:00:00 2001
+From: Andre McCurdy <armccurdy@gmail.com>
+Date: Mon, 28 Jan 2019 17:38:54 -0800
+Subject: [PATCH] always disable ARM -munaligned-access and force legacy -mbe32
+ mode
+
+Although the ARM1176JZ-S supports both misaligned memory access and
+the newer BE-8 big endian mode:
+
+  http://infocenter.arm.com/help/topic/com.arm.doc.ddi0333h/Cdfbbchb.html
+  http://infocenter.arm.com/help/topic/com.arm.doc.ddi0333h/Cdfbbchb.html#Cdfejcie
+
+the Pume6 ARM1176JZ-S doesn't seem to enable either. It's not clear
+if that's a HW limitation or because these options have not been
+correctly set by the primary bootloader etc but by the time the
+kernel starts, misaligned accesses cause exceptions and BE-8 code
+doesn't run.
+
+Since we can't rely on user space Makefiles etc to set the correct
+CFLAGS ( ie -mno-unaligned-access -mbe32 ) and gcc doesn't appear to
+provide configure options to change the default state of these
+options, change the defaults by hacking gcc.
+
+Note that these hacks are specific to Puma6 and will break the
+toolchain for other ARMv6 (and above) targets.
+
+  https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html#ARM-Options
+
+Signed-off-by: Andre McCurdy <armccurdy@gmail.com>
+---
+ gcc/config/arm/arm-cpus.in | 2 +-
+ gcc/config/arm/arm.c       | 8 ++++----
+ gcc/config/arm/arm.opt     | 2 +-
+ 3 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/gcc/config/arm/arm-cpus.in b/gcc/config/arm/arm-cpus.in
+index 728be500b80..f8e09d9586b 100644
+--- a/gcc/config/arm/arm-cpus.in
++++ b/gcc/config/arm/arm-cpus.in
+@@ -264,7 +264,7 @@ define fgroup ARMv4t        ARMv4 thumb
+ define fgroup ARMv5t        ARMv4t armv5t
+ define fgroup ARMv5te       ARMv5t armv5te
+ define fgroup ARMv5tej      ARMv5te
+-define fgroup ARMv6         ARMv5te armv6 be8
++define fgroup ARMv6         ARMv5te armv6
+ define fgroup ARMv6j        ARMv6
+ define fgroup ARMv6k        ARMv6 armv6k
+ define fgroup ARMv6z        ARMv6
+diff --git a/gcc/config/arm/arm.c b/gcc/config/arm/arm.c
+index d8da167fc0d..3adc0c7a7cd 100644
+--- a/gcc/config/arm/arm.c
++++ b/gcc/config/arm/arm.c
+@@ -3122,13 +3122,13 @@ arm_option_override_internal (struct gcc_options *opts,
+      - ARMv6-M architecture-based processors
+      - ARMv8-M Baseline processors.  */
+ 
++  /* Hack for Intel Puma6 (ARMv6 but broken): always disable -munaligned-access */
++
+   if (! opts_set->x_unaligned_access)
+     {
+-      opts->x_unaligned_access = (TARGET_32BIT_P (opts->x_target_flags)
+-			  && arm_arch6 && (arm_arch_notm || arm_arch7));
++      opts->x_unaligned_access = 0;
+     }
+-  else if (opts->x_unaligned_access == 1
+-	   && !(arm_arch6 && (arm_arch_notm || arm_arch7)))
++  else if (opts->x_unaligned_access == 1)
+     {
+       warning (0, "target CPU does not support unaligned accesses");
+      opts->x_unaligned_access = 0;
+diff --git a/gcc/config/arm/arm.opt b/gcc/config/arm/arm.opt
+index cd3d8e1beac..f7f478adce3 100644
+--- a/gcc/config/arm/arm.opt
++++ b/gcc/config/arm/arm.opt
+@@ -272,7 +272,7 @@ Avoid overlapping destination and address registers on LDRD instructions
+ that may trigger Cortex-M3 errata.
+ 
+ munaligned-access
+-Target Report Var(unaligned_access) Init(2) Save
++Target Report Var(unaligned_access) Init(0) Save
+ Enable unaligned word and halfword accesses to packed data.
+ 
+ mneon-for-64bits
+-- 
+2.24.0
+
