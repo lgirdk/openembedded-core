@@ -28,6 +28,9 @@ LIC_FILES_CHKSUM = "\
 
 BASEURI ?= "${GNU_MIRROR}/gcc/gcc-${PV}/gcc-${PV}.tar.xz \
            "
+
+PUMA_ARM_TOOLCHAIN ?= "0"
+
 SRC_URI = "\
            ${BASEURI} \
            file://0001-gcc-4.3.1-ARCH_FLAGS_FOR_TARGET.patch \
@@ -70,6 +73,8 @@ SRC_URI = "\
 	   file://0003-aarch64-Enable-FP16-feature-by-default-for-Armv9.patch \
 	   file://0004-arm-add-armv9-a-architecture-to-march.patch \
 "
+
+SRC_URI += "${@oe.utils.conditional('PUMA_ARM_TOOLCHAIN','1','file://950-always-disable-ARM-munaligned-access-and-force-legac.patch','',d)}"
 
 SRC_URI[sha256sum] = "a6e21868ead545cf87f0c01f84276e4b5281d672098591c1c896241f09363478"
 
