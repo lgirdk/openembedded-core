@@ -1,0 +1,28 @@
+From 50380d0169ee4c987124b338317de99a588158e0 Mon Sep 17 00:00:00 2001
+From: Andre McCurdy <armccurdy@gmail.com>
+Date: Fri, 5 Jun 2020 21:08:35 -0700
+Subject: [PATCH] provide fallback __KERNEL_DIV_ROUND_UP
+
+Signed-off-by: Andre McCurdy <armccurdy@gmail.com>
+---
+ uapi/linux/ethtool.h | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/uapi/linux/ethtool.h b/uapi/linux/ethtool.h
+index 1619806..0eb4751 100644
+--- a/uapi/linux/ethtool.h
++++ b/uapi/linux/ethtool.h
+@@ -20,6 +20,10 @@
+ 
+ #include <limits.h> /* for INT_MAX */
+ 
++#ifndef __KERNEL_DIV_ROUND_UP
++#define __KERNEL_DIV_ROUND_UP(n, d) (((n) + (d) - 1) / (d))
++#endif
++
+ /* All structures exposed to userland should be defined such that they
+  * have the same layout for 32-bit and 64-bit userland.
+  */
+-- 
+2.17.1
+
