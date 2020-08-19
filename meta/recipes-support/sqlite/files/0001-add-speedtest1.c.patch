@@ -1,4 +1,4 @@
-From 4f745ce6e79d260f4f39bb6c4dd739d6d93ecb92 Mon Sep 17 00:00:00 2001
+From d3d4b00871a9e9386814076017ef6eedf3d3f077 Mon Sep 17 00:00:00 2001
 From: Andre McCurdy <armccurdy@gmail.com>
 Date: Wed, 3 Jul 2019 20:02:16 +0000
 Subject: [PATCH] add speedtest1.c
@@ -9,15 +9,15 @@ Snapshot from current upstream master branch:
 
 Signed-off-by: Andre McCurdy <armccurdy@gmail.com>
 ---
- Makefile.am  |    8 +-
- speedtest1.c | 2290 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 2297 insertions(+), 1 deletion(-)
+ Makefile.am  |   12 +-
+ speedtest1.c | 2290 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 2301 insertions(+), 1 deletion(-)
  create mode 100644 speedtest1.c
 
-Index: sqlite-autoconf-3280000/Makefile.am
-===================================================================
---- sqlite-autoconf-3280000.orig/Makefile.am
-+++ sqlite-autoconf-3280000/Makefile.am
+diff --git a/Makefile.am b/Makefile.am
+index 694419b..e862d0f 100644
+--- a/Makefile.am
++++ b/Makefile.am
 @@ -4,13 +4,23 @@ lib_LTLIBRARIES = libsqlite3.la
  libsqlite3_la_SOURCES = sqlite3.c
  libsqlite3_la_LDFLAGS = -no-undefined -version-info 8:6:8
@@ -42,11 +42,12 @@ Index: sqlite-autoconf-3280000/Makefile.am
 +
  include_HEADERS = sqlite3.h sqlite3ext.h
  
- EXTRA_DIST = sqlite3.1 tea Makefile.msc sqlite3.rc README.txt Replace.cs Makefile.fallback
-Index: sqlite-autoconf-3280000/speedtest1.c
-===================================================================
+ EXTRA_DIST = sqlite3.1 tea Makefile.msc sqlite3.rc sqlite3rc.h README.txt Replace.cs Makefile.fallback
+diff --git a/speedtest1.c b/speedtest1.c
+new file mode 100644
+index 0000000..ccb8a44
 --- /dev/null
-+++ sqlite-autoconf-3280000/speedtest1.c
++++ b/speedtest1.c
 @@ -0,0 +1,2290 @@
 +/*
 +** A program for performance testing.
@@ -2338,3 +2339,6 @@ Index: sqlite-autoconf-3280000/speedtest1.c
 +  free( pHeap );
 +  return 0;
 +}
+-- 
+2.24.0
+
