@@ -49,7 +49,7 @@ SRCREV = "4a9440006398646583f0d9ae1837dad2875013aa"
 
 S = "${WORKDIR}/git"
 
-DEPENDS = "nss db file popt xz bzip2 dbus elfutils python3"
+DEPENDS = "nss db file popt xz bzip2 elfutils python3"
 DEPENDS_append_class-native = " file-replacement-native bzip2-replacement-native"
 
 inherit autotools gettext pkgconfig python3native
@@ -74,6 +74,7 @@ BBCLASSEXTEND = "native nativesdk"
 
 PACKAGECONFIG ??= ""
 PACKAGECONFIG[imaevm] = "--with-imaevm,,ima-evm-utils"
+PACKAGECONFIG[inhibit] = "--enable-inhibit-plugin,--disable-inhibit-plugin,dbus"
 PACKAGECONFIG[rpm2archive] = "--with-archive,--without-archive,libarchive"
 
 ASNEEDED = ""
