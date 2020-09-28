@@ -58,7 +58,7 @@ SRCREV = "4a9440006398646583f0d9ae1837dad2875013aa"
 
 S = "${WORKDIR}/git"
 
-DEPENDS = "openssl libarchive db file popt xz bzip2 dbus elfutils python3"
+DEPENDS = "openssl db file popt xz bzip2 dbus elfutils python3"
 DEPENDS_append_class-native = " file-replacement-native bzip2-replacement-native"
 
 inherit autotools gettext pkgconfig python3native
@@ -84,6 +84,7 @@ BBCLASSEXTEND = "native nativesdk"
 
 PACKAGECONFIG ??= ""
 PACKAGECONFIG[imaevm] = "--with-imaevm,,ima-evm-utils"
+PACKAGECONFIG[rpm2archive] = "--with-archive,--without-archive,libarchive"
 
 ASNEEDED = ""
 
@@ -105,7 +106,7 @@ WRAPPER_TOOLS = " \
 
 do_install_append_class-native() {
         for tool in ${WRAPPER_TOOLS}; do
-                create_wrapper ${D}$tool \
+                test -x ${D}$tool && create_wrapper ${D}$tool \
                         RPM_CONFIGDIR=${STAGING_LIBDIR_NATIVE}/rpm \
                         RPM_ETCCONFIGDIR=${STAGING_DIR_NATIVE} \
                         MAGIC=${STAGING_DIR_NATIVE}${datadir_native}/misc/magic.mgc \
@@ -115,7 +116,7 @@ do_install_append_class-native() {
 
 do_install_append_class-nativesdk() {
         for tool in ${WRAPPER_TOOLS}; do
-                create_wrapper ${D}$tool \
+                test -x ${D}$tool && create_wrapper ${D}$tool \
                         RPM_CONFIGDIR='`dirname $''realpath`'/${@os.path.relpath(d.getVar('libdir'), d.getVar('bindir'))}/rpm \
                         RPM_ETCCONFIGDIR='$'{RPM_ETCCONFIGDIR-'`dirname $''realpath`'/${@os.path.relpath(d.getVar('sysconfdir'), d.getVar('bindir'))}/..} \
                         MAGIC='`dirname $''realpath`'/${@os.path.relpath(d.getVar('datadir'), d.getVar('bindir'))}/misc/magic.mgc \
