@@ -40,26 +40,6 @@ ${SAVANNAH_NONGNU_MIRROR} http://download-mirror.savannah.nongnu.org/releases \n
 ftp://sourceware.org/pub http://mirrors.kernel.org/sourceware \n \
 ftp://sourceware.org/pub http://gd.tuwien.ac.at/gnu/sourceware \n \
 ftp://sourceware.org/pub http://ftp.gwdg.de/pub/linux/sources.redhat.com/sourceware \n \
-cvs://.*/.*     http://downloads.yoctoproject.org/mirror/sources/ \n \
-svn://.*/.*     http://downloads.yoctoproject.org/mirror/sources/ \n \
-git://.*/.*     http://downloads.yoctoproject.org/mirror/sources/ \n \
-hg://.*/.*      http://downloads.yoctoproject.org/mirror/sources/ \n \
-bzr://.*/.*     http://downloads.yoctoproject.org/mirror/sources/ \n \
-p4://.*/.*      http://downloads.yoctoproject.org/mirror/sources/ \n \
-osc://.*/.*     http://downloads.yoctoproject.org/mirror/sources/ \n \
-https?$://.*/.* http://downloads.yoctoproject.org/mirror/sources/ \n \
-ftp://.*/.*     http://downloads.yoctoproject.org/mirror/sources/ \n \
-npm://.*/?.*    http://downloads.yoctoproject.org/mirror/sources/ \n \
-cvs://.*/.*     http://sources.openembedded.org/ \n \
-svn://.*/.*     http://sources.openembedded.org/ \n \
-git://.*/.*     http://sources.openembedded.org/ \n \
-hg://.*/.*      http://sources.openembedded.org/ \n \
-bzr://.*/.*     http://sources.openembedded.org/ \n \
-p4://.*/.*      http://sources.openembedded.org/ \n \
-osc://.*/.*     http://sources.openembedded.org/ \n \
-https?$://.*/.* http://sources.openembedded.org/ \n \
-ftp://.*/.*     http://sources.openembedded.org/ \n \
-npm://.*/?.*    http://sources.openembedded.org/ \n \
 ${CPAN_MIRROR}  http://cpan.metacpan.org/ \n \
 ${CPAN_MIRROR}  http://search.cpan.org/CPAN/ \n \
 "
