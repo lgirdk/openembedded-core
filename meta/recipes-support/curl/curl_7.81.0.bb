@@ -67,6 +67,7 @@ EXTRA_OECONF = " \
     --enable-debug \
     --enable-optimize \
     --disable-curldebug \
+    ${@'--without-ssl' if (bb.utils.filter('PACKAGECONFIG', 'gnutls mbedtls nss openssl ssl', d) == '') else ''} \
 "
 
 do_install_append_class-target() {
