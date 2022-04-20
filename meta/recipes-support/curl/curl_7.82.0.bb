@@ -9,7 +9,9 @@ SECTION = "console/network"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://COPYING;md5=190c514872597083303371684954f238"
 
-SRC_URI = "https://curl.se/download/${BP}.tar.xz"
+SRC_URI = "https://curl.se/download/${BP}.tar.xz \
+           file://openssl-fix-CN-check-error-code.patch \
+"
 SRC_URI[sha256sum] = "0aaa12d7bd04b0966254f2703ce80dd5c38dbbd76af0297d3d690cdce58a583c"
 
 # Curl has used many names over the years...
