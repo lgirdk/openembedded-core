@@ -12,7 +12,7 @@ SECTION = "console/network"
 DEPENDS = ""
 PR = "r6"
 
-SRC_URI = "http://www.ohse.de/uwe/releases/lrzsz-${PV}.tar.gz \
+SRC_URI = "https://www.ohse.de/uwe/releases/lrzsz-${PV}.tar.gz \
            file://autotools-update.patch \
 	   file://autotools.patch \
 	   file://makefile.patch \
