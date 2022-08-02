@@ -11,53 +11,6 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=2e9fb35867314fe31c6a4977ef7dd531"
 
 SRC_URI = "https://curl.haxx.se/download/curl-${PV}.tar.bz2 \
            file://0001-replace-krb5-config-with-pkg-config.patch \
-           file://CVE-2020-8169.patch \
-           file://CVE-2020-8177.patch \
-           file://CVE-2020-8231.patch \
-           file://CVE-2020-8284.patch \
-           file://CVE-2020-8285.patch \
-           file://CVE-2020-8286.patch \
-           file://CVE-2021-22876.patch \
-           file://CVE-2021-22890.patch \
-           file://CVE-2021-22898.patch \
-           file://CVE-2021-22924.patch \
-           file://CVE-2021-22925.patch \
-           file://CVE-2021-22946-pre1.patch \
-           file://CVE-2021-22946.patch \
-           file://CVE-2021-22947.patch \
-           file://CVE-2022-27776.patch \
-           file://CVE-2022-27775.patch \
-           file://CVE-2022-22576.patch \
-           file://CVE-2022-27774-1.patch \
-           file://CVE-2022-27774-2.patch \
-           file://CVE-2022-27774-3.patch \
-           file://CVE-2022-27774-4.patch \
-           file://CVE-2022-27781.patch \
-           file://CVE-2022-27782-1.patch \
-           file://CVE-2022-27782-2.patch \
-           file://CVE-2022-32206.patch \
-           file://CVE-2022-32207.patch \
-           file://CVE-2022-32208.patch \
-           file://CVE-2022-35252.patch \
-           file://CVE-2022-32221.patch \
-           file://CVE-2022-35260.patch \
-           file://CVE-2022-43552.patch \
-           file://CVE-2023-23916.patch \
-           file://CVE-2023-27534-pre1.patch \
-           file://CVE-2023-27534.patch \
-           file://CVE-2023-27538.patch \
-           file://CVE-2023-27533.patch \
-           file://CVE-2023-27535-pre1.patch \
-           file://CVE-2023-27535.patch \
-           file://CVE-2023-27536.patch \
-           file://CVE-2023-28320.patch \
-           file://CVE-2023-28320-fol1.patch \
-           file://CVE-2023-32001.patch \
-           file://CVE-2023-38545.patch \
-           file://CVE-2023-38546.patch \
-           file://CVE-2023-28321.patch \
-           file://CVE-2023-28322.patch \
-           file://CVE-2023-46218.patch \
 "
 
 SRC_URI[md5sum] = "ec5fc263f898a3dfef08e805f1ecca42"
