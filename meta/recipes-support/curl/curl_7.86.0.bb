@@ -12,7 +12,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=190c514872597083303371684954f238"
 SRC_URI = " \
     https://curl.se/download/${BP}.tar.xz \
 "
-SRC_URI[sha256sum] = "88b54a6d4b9a48cb4d873c7056dcba997ddd5b7be5a2d537a4acb55c20b04be6"
+SRC_URI[sha256sum] = "2d61116e5f485581f6d59865377df4463f2e788677ac43222b496d4e49fb627b"
 
 # Curl has used many names over the years...
 CVE_PRODUCT = "haxx:curl haxx:libcurl curl:curl curl:libcurl libcurl:libcurl daniel_stenberg:curl"
