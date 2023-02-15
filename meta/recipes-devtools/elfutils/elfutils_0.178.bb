@@ -32,6 +32,8 @@ SRC_URI = "https://sourceware.org/elfutils/ftp/${PV}/${BP}.tar.bz2 \
            file://debian/0001-fix-compile-failure-with-debian-patches.patch \
            file://0001-skip-the-test-when-gcc-not-deployed.patch \
            file://0001-ppc_initreg.c-Incliude-asm-ptrace.h-for-pt_regs-defi.patch \
+           file://0001-PR29926-debuginfod-Fix-usage-of-deprecated-CURLINFO_.patch \
+           file://0002-debuginfod-Define-CURL_AT_LEAST_VERSION-if-necessary.patch \
            file://run-ptest \
            file://ptest.patch \
            file://CVE-2021-33294.patch \
