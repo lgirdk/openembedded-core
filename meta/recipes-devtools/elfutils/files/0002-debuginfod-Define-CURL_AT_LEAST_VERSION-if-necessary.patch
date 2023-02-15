@@ -1,0 +1,35 @@
+From c7f253428ed9d5fb5cabc4920542d8530ec941f6 Mon Sep 17 00:00:00 2001
+From: Mark Wielaard <mark@klomp.org>
+Date: Wed, 21 Dec 2022 18:21:08 +0100
+Subject: [PATCH] debuginfod: Define CURL_AT_LEAST_VERSION if necessary
+
+Older curl.h don't define CURL_AT_LEAST_VERSION, so define it
+ourselves because it is nicer than doing hex encoded version
+comparisons.
+
+Signed-off-by: Mark Wielaard <mark@klomp.org>
+---
+ debuginfod/debuginfod-client.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/debuginfod/debuginfod-client.c b/debuginfod/debuginfod-client.c
+index d35d9e1d..308372e5 100644
+--- a/debuginfod/debuginfod-client.c
++++ b/debuginfod/debuginfod-client.c
+@@ -71,6 +71,13 @@
+   #include <fts.h>
+ #endif
+ 
++/* Older curl.h don't define CURL_AT_LEAST_VERSION.  */
++#ifndef CURL_AT_LEAST_VERSION
++  #define CURL_VERSION_BITS(x,y,z) ((x)<<16|(y)<<8|(z))
++  #define CURL_AT_LEAST_VERSION(x,y,z) \
++    (LIBCURL_VERSION_NUM >= CURL_VERSION_BITS(x, y, z))
++#endif
++
+ struct debuginfod_client
+ {
+   /* Progress/interrupt callback function. */
+-- 
+2.24.0
+
