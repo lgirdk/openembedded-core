@@ -1,0 +1,48 @@
+From 0920ae37458035d3051dd14e81cef172390b842c Mon Sep 17 00:00:00 2001
+From: Andrew Paprocki <andrew@ishiboo.com>
+Date: Wed, 21 Dec 2022 11:15:00 -0500
+Subject: [PATCH] PR29926: debuginfod: Fix usage of deprecated CURLINFO_*
+
+The `CURLINFO_SIZE_DOWNLOAD_T` and `CURLINFO_CONTENT_LENGTH_DOWNLOAD_T`
+identifiers are `enum`s, not pre-processor definitions, so the current
+`#ifdef` logic is not selecting the newer API.  This results in the
+older identifiers being used and they now generate errors when compiled
+against Curl 7.87, which has silently deprecated them, causing GCC to
+emit `-Werror=deprecated-declarations`.
+
+Instead, the newer identifiers were added in Curl 7.55, so explicitly
+check for `CURL_AT_LEAST_VERSION(7, 55, 0)` instead of the current
+logic.  This eliminates the error when compiling against Curl 7.87.
+
+Ref: https://github.com/curl/curl/pull/1511
+
+Signed-off-by: Andrew Paprocki <andrew@ishiboo.com>
+---
+ debuginfod/debuginfod-client.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/debuginfod/debuginfod-client.c b/debuginfod/debuginfod-client.c
+index 6e62b86c..d35d9e1d 100644
+--- a/debuginfod/debuginfod-client.c
++++ b/debuginfod/debuginfod-client.c
+@@ -518,7 +518,7 @@ debuginfod_query_server (debuginfod_client *c,
+           long pb = 0;
+           if (target_handle) /* we've committed to a server; report its download progress */
+             {
+-#ifdef CURLINFO_SIZE_DOWNLOAD_T
++#if CURL_AT_LEAST_VERSION(7, 55, 0)
+               curl_off_t dl;
+               curl_res = curl_easy_getinfo(target_handle,
+                                            CURLINFO_SIZE_DOWNLOAD_T,
+@@ -534,7 +534,7 @@ debuginfod_query_server (debuginfod_client *c,
+                 pa = (dl > LONG_MAX ? LONG_MAX : (long)dl);
+ #endif
+ 
+-#ifdef CURLINFO_CURLINFO_CONTENT_LENGTH_DOWNLOAD_T
++#if CURL_AT_LEAST_VERSION(7, 55, 0)
+               curl_off_t cl;
+               curl_res = curl_easy_getinfo(target_handle,
+                                            CURLINFO_CONTENT_LENGTH_DOWNLOAD_T,
+-- 
+2.24.0
+
