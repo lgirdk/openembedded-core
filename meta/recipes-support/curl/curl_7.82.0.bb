@@ -9,56 +9,7 @@ SECTION = "console/network"
 LICENSE = "curl"
 LIC_FILES_CHKSUM = "file://COPYING;md5=190c514872597083303371684954f238"
 
-SRC_URI = "https://curl.se/download/${BP}.tar.xz \
-           file://CVE-2022-22576.patch \
-           file://CVE-2022-27775.patch \
-           file://CVE-2022-27776.patch \
-           file://CVE-2022-27774-1.patch \
-           file://CVE-2022-27774-2.patch \
-           file://CVE-2022-27774-3.patch \
-           file://CVE-2022-27774-4.patch \
-           file://CVE-2022-30115.patch \
-           file://CVE-2022-27780.patch \
-           file://CVE-2022-27781.patch \
-           file://CVE-2022-27779.patch \
-           file://CVE-2022-27782-1.patch \
-           file://CVE-2022-27782-2.patch \
-           file://0001-openssl-fix-CN-check-error-code.patch \
-           file://CVE-2022-32205.patch \
-           file://CVE-2022-32206.patch \
-           file://CVE-2022-32207.patch \
-           file://CVE-2022-32208.patch \
-           file://CVE-2022-35252.patch \
-           file://CVE-2022-32221.patch \
-           file://CVE-2022-42916.patch \
-           file://CVE-2022-42915.patch \
-           file://CVE-2022-43551.patch \
-           file://CVE-2022-43552.patch \
-           file://CVE-2023-23914_5-1.patch \
-           file://CVE-2023-23914_5-2.patch \
-           file://CVE-2023-23914_5-3.patch \
-           file://CVE-2023-23914_5-4.patch \
-           file://CVE-2023-23914_5-5.patch \
-           file://CVE-2023-23916.patch \
-           file://CVE-2023-27533.patch \
-           file://CVE-2023-27534.patch \
-           file://CVE-2023-27535-pre1.patch \
-           file://CVE-2023-27535_and_CVE-2023-27538.patch \
-           file://CVE-2023-27536.patch \
-           file://CVE-2023-28319.patch \
-           file://CVE-2023-28320.patch \
-           file://CVE-2023-28320-fol1.patch \
-           file://CVE-2023-28321.patch \
-           file://CVE-2023-28322-1.patch \
-           file://CVE-2023-28322-2.patch \
-           file://CVE-2023-38545.patch \
-           file://CVE-2023-38546.patch \
-           file://CVE-2023-46218.patch \
-           file://CVE-2023-46219-0001.patch \
-           file://CVE-2023-46219-0002.patch \
-           file://CVE-2023-46219-0003.patch \
-           file://CVE-2024-2398.patch \
-           "
+SRC_URI = "https://curl.se/download/${BP}.tar.xz"
 SRC_URI[sha256sum] = "0aaa12d7bd04b0966254f2703ce80dd5c38dbbd76af0297d3d690cdce58a583c"
 
 # Curl has used many names over the years...
