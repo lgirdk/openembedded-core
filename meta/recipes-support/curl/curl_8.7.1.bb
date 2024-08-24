@@ -13,6 +13,8 @@ SRC_URI = " \
     https://curl.se/download/${BP}.tar.xz \
     file://721941aadf4adf4f6aeb3f4c0ab489bb89610c36.patch \
     file://CVE-2024-6197.patch \
+    file://CVE-2024-7264-1.patch \
+    file://CVE-2024-7264-2.patch \
 "
 SRC_URI[sha256sum] = "6fea2aac6a4610fbd0400afb0bcddbe7258a64c63f1f68e5855ebc0c659710cd"
 
