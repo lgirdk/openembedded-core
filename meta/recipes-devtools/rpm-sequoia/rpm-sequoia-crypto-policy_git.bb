@@ -5,9 +5,7 @@ LICENSE = "LGPL-2.1-or-later"
 
 LIC_FILES_CHKSUM = "file://COPYING.LESSER;md5=a6f89e2100d9b6cdffcea4f398e37343"
 
-DEPENDS = "coreutils-native openssl-native make-native"
-
-inherit allarch python3native
+inherit allarch
 
 SRC_URI = "git://gitlab.com/redhat-crypto/fedora-crypto-policies.git;protocol=https;branch=master"
 
