@@ -10,19 +10,9 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=5eb289217c160e2920d2e35bddc36453 \
                     file://pcap.h;beginline=1;endline=32;md5=39af3510e011f34b8872f120b1dc31d2"
 DEPENDS = "flex-native bison-native"
 
-SRC_URI = "https://www.tcpdump.org/release/${BP}.tar.gz \
-           file://CVE-2023-7256-pre1.patch \
-           file://CVE-2023-7256-pre2.patch \
-           file://CVE-2023-7256-pre3.patch \
-           file://CVE-2023-7256-pre4.patch \
-           file://CVE-2023-7256.patch \
-           file://CVE-2024-8006.patch \
-           file://CVE-2025-11961-01.patch \
-           file://CVE-2025-11961-02.patch \
-           file://CVE-2025-11964.patch \
-          "
+SRC_URI = "https://www.tcpdump.org/release/${BP}.tar.gz"
 
-SRC_URI[sha256sum] = "ed285f4accaf05344f90975757b3dbfe772ba41d1c401c2648b7fa45b711bdd4"
+SRC_URI[sha256sum] = "0b394ac90dbc0a9838ff97468e05c9c9a3e873dec2514cd58db65d859d296e31"
 
 inherit autotools binconfig-disabled pkgconfig
 
